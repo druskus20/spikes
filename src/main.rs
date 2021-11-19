@@ -1,26 +1,26 @@
 use bevy::{prelude::*, render::pass::ClearColor};
 
 mod scenes;
-use scenes::*;
+
+pub const WIN_WIDTH: f32 = 1000.0;
+pub const WIN_HEIGHT: f32 = 1000.0;
 
 /// An implementation of the classic game "Breakout"
 fn main() {
     App::build()
-        .add_plugins(DefaultPlugins)
-        .insert_resource(Scoreboard { score: 0 })
+        // TODO: Move this
+        .insert_resource(Msaa { samples: 4 })
+        .insert_resource(WindowDescriptor {
+            title: "Spike".to_string(),
+            width: WIN_WIDTH,
+            height: WIN_HEIGHT,
+            ..Default::default()
+        })
         .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
-        .add_startup_system(load_scene_system.system())
-        .add_startup_system(save_scene_system.exclusive_system())
-        .add_startup_system(game::setup.system())
-        .add_system(title::title_screen.system())
-        .add_system(game::paddle_movement_system.system())
-        .add_system(game::ball_collision_system.system())
-        .add_system(game::ball_movement_system.system())
-        .add_system(game::scoreboard_system.system())
+        // ---
+        .add_plugins(DefaultPlugins)
+        .add_plugin(scenes::ScenesPlugin)
         .run();
 }
 
-#[derive(Reflect, Clone)]
-pub struct Scoreboard {
-    score: usize,
-}
+//
