@@ -8,7 +8,9 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_system_set(SystemSet::on_enter(GameState::Game).with_system(setup_system.system()))
             .add_system_set(
-                SystemSet::on_update(GameState::Game).with_system(player_movement_system.system()),
+                SystemSet::on_update(GameState::Game)
+                    .with_system(player_movement_system.system())
+                    .with_system(animate_sprite_system.system()),
             )
             .add_system_set(SystemSet::on_exit(GameState::Game).with_system(despawn.system()));
     }
@@ -28,24 +30,47 @@ pub enum ColliderKind {
     Player,
 }
 
+fn animate_sprite_system(
+    time: Res<Time>,
+    texture_atlases: Res<Assets<TextureAtlas>>,
+    mut query: Query<(&mut Timer, &mut TextureAtlasSprite, &Handle<TextureAtlas>)>,
+) {
+    for (mut timer, mut sprite, texture_atlas_handle) in query.iter_mut() {
+        timer.tick(time.delta());
+        if timer.finished() {
+            let texture_atlas = texture_atlases.get(texture_atlas_handle).unwrap();
+            // animate the sprite
+            let current_index = sprite.index;
+            let next_index = (current_index + 1) % 4 as u32;
+            sprite.index = next_index;
+            timer.reset();
+        }
+    }
+}
+
 // TODO: Clean this up
 pub fn setup_system(
     mut commands: Commands,
     mut materials: ResMut<Assets<ColorMaterial>>,
     asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
 ) {
     // cameras
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
     commands.spawn_bundle(UiCameraBundle::default());
 
     // player
+    let texture_handle = asset_server.load("textures/rpg/chars/example.png");
+    let texture_atlas = TextureAtlas::from_grid(texture_handle, Vec2::new(16.0, 16.0), 10, 10);
+    let texture_atlas_handle = texture_atlases.add(texture_atlas);
+
     commands
-        .spawn_bundle(SpriteBundle {
-            material: materials.add(Color::rgb(0.5, 0.5, 1.0).into()),
-            transform: Transform::from_xyz(0.0, -215.0, 0.0),
-            sprite: Sprite::new(Vec2::new(50.0, 50.0)),
+        .spawn_bundle(SpriteSheetBundle {
+            texture_atlas: texture_atlas_handle,
+            transform: Transform::from_scale(Vec3::new(6.0, 6.0, 0.0)),
             ..Default::default()
         })
+        .insert(Timer::from_seconds(0.1, true))
         .insert(Player { speed: 1000.0 })
         .insert(GameEntity)
         .insert(ColliderKind::Player);

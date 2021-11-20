@@ -1,4 +1,4 @@
-use bevy::{prelude::*, render::pass::ClearColor};
+use bevy::{app::Events, prelude::*, render::pass::ClearColor, window::WindowResized};
 
 mod scenes;
 
@@ -22,5 +22,3 @@ fn main() {
         .add_plugin(scenes::ScenesPlugin)
         .run();
 }
-
-//

@@ -27,25 +27,24 @@ pub fn setup_system(mut commands: Commands, asset_server: Res<AssetServer>) {
     // Spawn the title screen with spawn_bundle
     commands
         .spawn_bundle(TextBundle {
-            text: Text {
-                sections: vec![
-                    TextSection {
-                        value: "Spikes".to_string(),
-                        style: TextStyle {
-                            font: asset_server.load("fonts/FiraSans-Bold.ttf"),
-                            color: Color::WHITE,
-                            font_size: 64.0,
-                        },
-                    },
-                    TextSection {
-                        value: "Press SPACE to Start".to_string(),
-                        style: TextStyle {
-                            font: asset_server.load("fonts/FiraSans-Bold.ttf"),
-                            color: Color::WHITE,
-                            font_size: 32.0,
-                        },
-                    },
-                ],
+            text: Text::with_section(
+                "Spikes".to_string(),
+                TextStyle {
+                    font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                    font_size: 60.0,
+                    color: Color::WHITE,
+                },
+                TextAlignment {
+                    vertical: VerticalAlign::Center,
+                    horizontal: HorizontalAlign::Center,
+                },
+            ),
+            style: Style {
+                size: Size::new(Val::Px(200.0), Val::Px(90.0)),
+                margin: Rect::all(Val::Auto),
+                padding: Rect::all(Val::Auto),
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
                 ..Default::default()
             },
             ..Default::default()
