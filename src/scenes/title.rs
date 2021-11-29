@@ -16,7 +16,6 @@ impl Plugin for TitlePlugin {
     }
 }
 
-#[derive(Reflect, Clone)]
 pub struct TitleScreen {}
 
 pub fn setup_system(mut commands: Commands, asset_server: Res<AssetServer>) {

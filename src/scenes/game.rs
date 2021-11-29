@@ -18,16 +18,20 @@ impl Plugin for GamePlugin {
 
 struct GameEntity;
 
-#[derive(Reflect, Clone)]
 pub struct Player {
     speed: f32,
 }
 
-#[derive(Reflect, Clone)]
 pub enum ColliderKind {
     Solid,
-    Enemy,
+    Spike,
     Player,
+}
+
+pub struct Spike {
+    position: Vec3,
+    color: Color,
+    size: Vec3,
 }
 
 fn animate_sprite_system(
@@ -112,15 +116,28 @@ pub fn setup_system(
             ..Default::default()
         })
         .insert(GameEntity);
-
-    spawn_walls(commands, materials, asset_server);
+    // TODO: Use fromResources instead
+    spawn_walls(commands, materials);
 }
 
-fn spawn_walls(
-    mut commands: Commands,
-    mut materials: ResMut<Assets<ColorMaterial>>,
-    _asset_server: Res<AssetServer>,
-) {
+fn spawn_spike(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
+    let spike = Spike {
+        position: Vec3::new(0.0, 0.0, 0.0),
+        size: Vec3::new(16.0, 16.0, 0.0),
+        color: Color::rgb(0.5, 0.5, 0.5),
+    };
+
+    let spike_material = materials.add(spike.color.into());
+
+    commands.spawn_bundle(SpriteBundle {
+        material: spike_material,
+        transform: Transform::from_xyz(0.0, 0.0, 0.0),
+        sprite: Sprite::new(Vec2::new(spike.size.x, spike.size.y)),
+        ..Default::default()
+    });
+}
+
+fn spawn_walls(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     // Add walls
     let wall_material = materials.add(Color::rgb(0.8, 0.8, 0.8).into());
     let wall_thickness = 10.0;
