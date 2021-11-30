@@ -2,6 +2,7 @@ use std::time::SystemTime;
 
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
+use bevy::sprite::collide_aabb::Collision;
 
 use super::Collider;
 use super::ColliderKind;
@@ -14,8 +15,8 @@ impl Plugin for PlayerPlugin {
         app.add_system_set(SystemSet::on_enter(Screen::Game).with_system(setup.system()))
             .add_system_set(
                 SystemSet::on_update(Screen::Game)
-                    .with_system(movement.system())
-                    .with_system(collision.system()),
+                    .with_system(collision.system().label("collision"))
+                    .with_system(movement.system().after("collision")),
             )
             .add_system_set(SystemSet::on_exit(Screen::Game).with_system(despawn.system()));
     }
@@ -24,6 +25,15 @@ impl Plugin for PlayerPlugin {
 #[derive(Debug)]
 pub struct Player {
     speed: f32,
+    colliding_directions: CollidingDirections,
+}
+
+#[derive(Debug, Default)]
+struct CollidingDirections {
+    up: bool,
+    down: bool,
+    left: bool,
+    right: bool,
 }
 
 fn setup(
@@ -62,7 +72,10 @@ fn setup(
             kind: ColliderKind::Player,
             size: Vec2::new(32.0, 32.0),
         })
-        .insert(Player { speed: 500.0 });
+        .insert(Player {
+            speed: 500.0,
+            colliding_directions: Default::default(),
+        });
 }
 
 fn movement(
@@ -72,19 +85,19 @@ fn movement(
 ) {
     if let Ok((player, mut transform)) = query.single_mut() {
         let (mut x, mut y) = (0.0, 0.0);
-        if keyboard_input.pressed(KeyCode::Left) {
+        if keyboard_input.pressed(KeyCode::Left) && !player.colliding_directions.left {
             x -= 1.0;
         }
 
-        if keyboard_input.pressed(KeyCode::Right) {
+        if keyboard_input.pressed(KeyCode::Right) && !player.colliding_directions.right {
             x += 1.0;
         }
 
-        if keyboard_input.pressed(KeyCode::Down) {
+        if keyboard_input.pressed(KeyCode::Down) && !player.colliding_directions.down {
             y -= 1.0;
         }
 
-        if keyboard_input.pressed(KeyCode::Up) {
+        if keyboard_input.pressed(KeyCode::Up) && !player.colliding_directions.up {
             y += 1.0;
         }
         let translation = &mut transform.translation;
@@ -96,30 +109,36 @@ fn movement(
     }
 }
 
+// TODO: Clean this up after implementing spikes
 fn collision(
     mut materials: ResMut<Assets<ColorMaterial>>,
-    mut query: Query<(&mut Handle<ColorMaterial>), With<Player>>,
-    player_query: Query<(&Collider, &Transform), With<Player>>,
+    mut query: Query<(&mut Player, &mut Handle<ColorMaterial>)>,
+    player_collider_query: Query<(&Collider, &Transform), With<Player>>,
     collider_query: Query<(&Collider, &Transform), Without<Player>>,
 ) {
     let mut player_color = Color::rgb(0.0, 0.0, 1.0);
+    let mut colliding_directions = CollidingDirections::default();
 
-    if let Ok((player_collider, player_transform)) = player_query.single() {
+    if let Ok((player_collider, player_transform)) = player_collider_query.single() {
         for (collider, transform) in collider_query.iter() {
-            if collide(
-                player_transform.translation,
-                player_collider.size,
+            if let Some(collision) = collide(
                 transform.translation,
                 collider.size,
-            )
-            .is_some()
-            {
+                player_transform.translation,
+                player_collider.size,
+            ) {
                 player_color = Color::rgb(0.0, 1.0, 0.0);
+                match collision {
+                    Collision::Left => colliding_directions.left = true,
+                    Collision::Right => colliding_directions.right = true,
+                    Collision::Top => colliding_directions.up = true,
+                    Collision::Bottom => colliding_directions.down = true,
+                }
             }
         }
     }
-
-    if let Ok(material_handle) = query.single_mut() {
+    if let Ok((mut player, material_handle)) = query.single_mut() {
+        player.colliding_directions = colliding_directions;
         if let Some(color_mat) = materials.get_mut(material_handle.id) {
             color_mat.color = player_color;
         }

@@ -20,9 +20,9 @@ Bevy's design patterns.
 - [x] Walls
   - [ ] Maybe separate the walls and their colliders
 - [x] Collisions
-- [ ] Sprites / Animated sprites
 - [ ] Add game mechanics (spikes)
-- [ ] Implement score and win conditions
+- [ ] Implement score and lose conditions
+- [ ] Sprites / Animated sprites
 - [ ] Music ([@Elkowar](https://github.com/elkowar)...?) 
 - [ ] Resize
 
