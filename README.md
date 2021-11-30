@@ -5,8 +5,10 @@
 - [x] Basic Game State
 - [x] Basic File Structure
 - [x] Display something
-- [ ] Manage Assets / Resources
-- [ ] Multiple scenes with their own systems
+- [x] Manage Assets / Resources (works for now)
+  - Figure out a better way to handle global resources
+- [x] Multiple scenes with their own systems 
+  - [x] How to destroy elements from a scene
 - [ ] Manage input in different scenes
 - [ ] Player that moves 
 - [ ] Walls

@@ -1,23 +1,15 @@
 use bevy::prelude::*;
 
+use crate::gamedata::GameState;
+
 pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut AppBuilder) {
-        //app.add_system_set(SystemSet::on_enter(GameState::Game).with_system(setup.system()));
-        app.add_state(GameState::MainMenu)
-            .insert_resource(Score { score: -1 });
+        app.add_system_set(SystemSet::on_enter(GameState::Game).with_system(setup.system()))
+            //.add_system_set(SystemSet::on_update(GameState::Game).with_system(system.system()))
+            .add_system_set(SystemSet::on_exit(GameState::Game).with_system(despawn.system()));
     }
 }
 
-fn setup(mut commands: Commands) {}
-
-#[derive(Hash, Clone, Eq, PartialEq, Debug)]
-pub enum GameState {
-    MainMenu,
-    Game,
-    GameOver,
-}
-
-struct Score {
-    score: i32,
-}
+fn setup() {}
+fn despawn() {}

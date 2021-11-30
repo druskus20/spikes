@@ -1,9 +1,12 @@
-use bevy::{app::Events, prelude::*, render::pass::ClearColor, window::WindowResized};
+use bevy::{prelude::*, render::pass::ClearColor};
+
+mod game;
+mod gamedata;
+mod main_menu;
+mod resources;
+mod scene;
 
 #[allow(dead_code)]
-mod game;
-mod scene;
-mod title;
 
 pub const TITLE: &str = "Spikes";
 pub const WIDTH: f32 = 500.0;
@@ -14,7 +17,8 @@ fn main() {
         .set_default_properties()
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup_cameras.system())
-        .add_plugin(game::GamePlugin)
+        .add_plugin(resources::ResourcesPlugin)
+        .add_plugin(gamedata::GameDataPlugin)
         .add_plugin(scene::ScenePlugin)
         .run();
 }

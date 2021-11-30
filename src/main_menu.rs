@@ -1,41 +1,45 @@
 use bevy::prelude::*;
 
-use crate::game::GameState;
+use crate::{gamedata::GameState, resources::GlobalResources};
 
-pub struct TitlePlugin;
+pub struct MainMenuPlugin;
 
-impl Plugin for TitlePlugin {
+impl Plugin for MainMenuPlugin {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_system_set(SystemSet::on_enter(GameState::MainMenu).with_system(setup.system()));
+        app.add_system_set(SystemSet::on_enter(GameState::MainMenu).with_system(setup.system()))
+            .add_system_set(
+                SystemSet::on_update(GameState::MainMenu).with_system(menu_input.system()),
+            )
+            .add_system_set(SystemSet::on_exit(GameState::MainMenu).with_system(despawn.system()));
         //app.add_system_set(SystemSet::on_update(GameState::MainMenu).with_system(input.system()));
         //app.add_system_set(SystemSet::on_exit(GameState::MainMenu).with_system(destroy.system()));
     }
 }
 
-struct TitleUI;
+struct MainMenuUI;
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    // Spawn the title screen with spawn_bundle
+fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
+    // TODO: Figure out a good way to handle colors
     commands
         .spawn_bundle(NodeBundle {
             style: Style {
                 size: Size::new(Val::Percent(100.), Val::Percent(100.)),
                 display: Display::Flex,
                 flex_direction: FlexDirection::Column,
-
                 ..Default::default()
             },
+            material: global_resources.background.clone(),
             ..Default::default()
         })
-        .insert(TitleUI)
+        .insert(MainMenuUI)
         .with_children(|parent| {
             parent.spawn_bundle(TextBundle {
                 text: Text::with_section(
                     "Press Space".to_string(),
                     TextStyle {
-                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font: global_resources.font.clone(),
                         font_size: 30.0,
-                        color: Color::BLUE,
+                        color: Color::rgb(0.8, 0.8, 0.8),
                     },
                     TextAlignment::default(),
                 ),
@@ -54,9 +58,9 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 text: Text::with_section(
                     "Spikes".to_string(),
                     TextStyle {
-                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        font: global_resources.font.clone(),
                         font_size: 60.0,
-                        color: Color::BLUE,
+                        color: Color::rgb(0.8, 0.8, 0.8),
                     },
                     TextAlignment::default(),
                 ),
@@ -71,4 +75,16 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
                 ..Default::default()
             });
         });
+}
+
+fn menu_input(input_state: Res<Input<KeyCode>>, mut game_state: ResMut<State<GameState>>) {
+    if input_state.just_pressed(KeyCode::Space) {
+        game_state.set(GameState::Game).unwrap();
+    }
+}
+
+fn despawn(mut commands: Commands, query: Query<(Entity, &MainMenuUI)>) {
+    commands
+        .entity(query.single().unwrap().0)
+        .despawn_recursive();
 }
