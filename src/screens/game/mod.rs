@@ -11,9 +11,22 @@ impl Plugin for GamePlugin {
         app.add_system_set(SystemSet::on_enter(Screen::Game).with_system(setup.system()))
             .add_system_set(SystemSet::on_update(Screen::Game).with_system(input.system()))
             .add_system_set(SystemSet::on_exit(Screen::Game).with_system(despawn.system()))
-            .add_plugin(player::PlayerPlugin)
-            .add_plugin(level::LevelPlugin);
+            .add_plugin(level::LevelPlugin)
+            .add_plugin(player::PlayerPlugin);
     }
+}
+
+#[derive(Debug)]
+pub struct Collider {
+    pub kind: ColliderKind,
+    pub size: Vec2,
+}
+
+#[derive(Debug)]
+pub enum ColliderKind {
+    Player,
+    Wall,
+    Spike,
 }
 
 fn setup() {

@@ -22,7 +22,6 @@ impl FromWorld for GlobalResources {
         let background = materials.add(Color::rgb(0.1, 0.1, 0.1).into());
 
         let asset_server = world.get_resource::<AssetServer>().unwrap();
-
         GlobalResources {
             none,
             background,

@@ -1,6 +1,7 @@
+use crate::{HEIGHT, WIDTH};
 use bevy::prelude::*;
 
-use super::Screen;
+use super::{Collider, ColliderKind, Screen};
 
 pub struct LevelPlugin;
 
@@ -15,50 +16,65 @@ struct Wall;
 
 fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     // TODO: handle materials in a proper way
-    let wall_material = materials.add(Color::rgb(0.8, 0.8, 0.8).into());
-    let wall_thickness = 5.0;
-    let bounds = Vec2::new(500.0, 500.0);
+    let wall_material = &materials.add(Color::rgb(0.8, 0.8, 0.8).into());
 
-    // left
-    commands
-        .spawn_bundle(SpriteBundle {
-            material: wall_material.clone(),
-            transform: Transform::from_xyz(-bounds.x / 2.0, 0.0, 0.0),
-            sprite: Sprite::new(Vec2::new(wall_thickness, bounds.y + wall_thickness)),
-            ..Default::default()
-        })
-        .insert(Wall);
-    // right
-    commands
-        .spawn_bundle(SpriteBundle {
-            material: wall_material.clone(),
-            transform: Transform::from_xyz(bounds.x / 2.0, 0.0, 0.0),
-            sprite: Sprite::new(Vec2::new(wall_thickness, bounds.y + wall_thickness)),
-            ..Default::default()
-        })
-        .insert(Wall);
-    // bottom
-    commands
-        .spawn_bundle(SpriteBundle {
-            material: wall_material.clone(),
-            transform: Transform::from_xyz(0.0, -bounds.y / 2.0, 0.0),
-            sprite: Sprite::new(Vec2::new(bounds.x + wall_thickness, wall_thickness)),
-            ..Default::default()
-        })
-        .insert(Wall);
-    // top
-    commands
-        .spawn_bundle(SpriteBundle {
-            material: wall_material,
-            transform: Transform::from_xyz(0.0, bounds.y / 2.0, 0.0),
-            sprite: Sprite::new(Vec2::new(bounds.x + wall_thickness, wall_thickness)),
-            ..Default::default()
-        })
-        .insert(Wall);
+    spawn_wall(
+        &mut commands,
+        wall_material,
+        Vec2::new(WIDTH / 2.0, 0.0),
+        Vec2::new(0.0, HEIGHT),
+        3.0,
+    );
+
+    spawn_wall(
+        &mut commands,
+        wall_material,
+        Vec2::new(-WIDTH / 2.0, 0.0),
+        Vec2::new(0.0, HEIGHT),
+        3.0,
+    );
+
+    spawn_wall(
+        &mut commands,
+        wall_material,
+        Vec2::new(0.0, HEIGHT / 2.0),
+        Vec2::new(HEIGHT, 0.0),
+        3.0,
+    );
+
+    spawn_wall(
+        &mut commands,
+        wall_material,
+        Vec2::new(0.0, -HEIGHT / 2.0),
+        Vec2::new(HEIGHT, 0.0),
+        3.0,
+    );
 }
 
 fn despawn(mut commands: Commands, query: Query<(Entity, &Wall)>) {
     for (entity, _) in query.iter() {
         commands.entity(entity).despawn();
     }
+}
+
+// BUG: Collider is only working in one direction
+fn spawn_wall(
+    commands: &mut Commands,
+    material: &Handle<ColorMaterial>,
+    position: Vec2,
+    size: Vec2,
+    thickness: f32,
+) {
+    commands
+        .spawn_bundle(SpriteBundle {
+            material: material.clone(),
+            transform: Transform::from_xyz(position.x, position.y, 0.0),
+            sprite: Sprite::new(Vec2::new(size.x + thickness, size.y + thickness)),
+            ..Default::default()
+        })
+        .insert(Collider {
+            kind: ColliderKind::Wall,
+            size: Vec2::new(size.x + thickness, size.y + thickness),
+        })
+        .insert(Wall);
 }
