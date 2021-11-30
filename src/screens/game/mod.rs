@@ -16,17 +16,25 @@ impl Plugin for GamePlugin {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Collider {
-    pub kind: ColliderKind,
+    pub position: Vec2, // relative to its sprite
     pub size: Vec2,
+    pub kind: ColliderKind,
 }
 
 #[derive(Debug)]
 pub enum ColliderKind {
+    None,
     Player,
     Wall,
     Spike,
+}
+
+impl Default for ColliderKind {
+    fn default() -> Self {
+        ColliderKind::None
+    }
 }
 
 fn setup() {}

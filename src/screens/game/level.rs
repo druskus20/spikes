@@ -13,42 +13,51 @@ impl Plugin for LevelPlugin {
 }
 
 struct Wall;
+enum FacingTowards {
+    Left,
+    Right,
+    Top,
+    Bottom,
+}
 
 fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     // TODO: handle materials in a proper way
     let wall_material = &materials.add(Color::rgb(0.8, 0.8, 0.8).into());
-    let collider_offset = 300.0;
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new((WIDTH / 2.0) + (collider_offset / 2.0), 0.0),
+        Vec2::new(WIDTH / 2.0, 0.0),
         Vec2::new(0.0, HEIGHT),
-        3.0 + collider_offset,
+        3.0,
+        FacingTowards::Right,
     );
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(-(WIDTH / 2.0) - (collider_offset / 2.0), 0.0),
+        Vec2::new(-(WIDTH / 2.0), 0.0),
         Vec2::new(0.0, HEIGHT),
-        3.0 + collider_offset,
+        3.0,
+        FacingTowards::Left,
     );
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(0.0, (HEIGHT / 2.0) + (collider_offset / 2.0)),
+        Vec2::new(0.0, HEIGHT / 2.0),
         Vec2::new(HEIGHT, 0.0),
-        3.0 + collider_offset,
+        3.0,
+        FacingTowards::Top,
     );
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(0.0, -(HEIGHT / 2.0) - (collider_offset / 2.0)),
+        Vec2::new(0.0, -(HEIGHT / 2.0)),
         Vec2::new(HEIGHT, 0.0),
-        3.0 + collider_offset,
+        3.0,
+        FacingTowards::Bottom,
     );
 }
 
@@ -58,13 +67,32 @@ fn despawn(mut commands: Commands, query: Query<(Entity, &Wall)>) {
     }
 }
 
+// Spawns a wall with a huge collider on the oposite side to "facing_side"
+//
+// |W| -------+
+// |W|        |
+// |W|        |
+// |W|        |
+// |W|        |
+// |W| -------+
+//
 fn spawn_wall(
     commands: &mut Commands,
     material: &Handle<ColorMaterial>,
     position: Vec2,
     size: Vec2,
     thickness: f32,
+    facing_towards: FacingTowards,
 ) {
+    // Calculate the position of the collider, relative to the sprite
+    let collider_offset = 150.0;
+    let collider_position = match facing_towards {
+        FacingTowards::Right => Vec2::new(collider_offset, 0.0),
+        FacingTowards::Left => Vec2::new(-collider_offset, 0.0),
+        FacingTowards::Top => Vec2::new(0.0, collider_offset),
+        FacingTowards::Bottom => Vec2::new(0.0, -collider_offset),
+    };
+
     commands
         .spawn_bundle(SpriteBundle {
             material: material.clone(),
@@ -74,7 +102,11 @@ fn spawn_wall(
         })
         .insert(Collider {
             kind: ColliderKind::Wall,
-            size: Vec2::new(size.x + thickness, size.y + thickness),
+            size: Vec2::new(
+                size.x + thickness + (2.0 * collider_offset),
+                size.y + thickness + (2.0 * collider_offset),
+            ),
+            position: collider_position,
         })
         .insert(Wall);
 }
