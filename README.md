@@ -1,8 +1,10 @@
 <h1 align="center">Spikes</h1>
 <p align="center">
-A simple game made using <a href="https://bevyengine.org">Bevy</a>. It may or
-may not be a bit over engineered in order to experiment with design Bevy's
-design patterns.
+A simple game made using <a href="https://bevyengine.org">Bevy</a>. 
+</p> 
+<p align="center">
+It may or may not be a bit over engineered in order to experiment with design
+Bevy's design patterns.
 </p> 
 
 ## TODO
