@@ -1,3 +1,5 @@
+use std::time::SystemTime;
+
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
 
@@ -47,20 +49,20 @@ fn setup(
     //    })
     //    .insert(Player { speed: 100.0 });
 
-    let wall_material = materials.add(Color::rgb(0.8, 0.8, 0.8).into());
+    let wall_material = materials.add(Color::rgb(0.8, 0.1, 0.1).into());
     commands
         .spawn_bundle(SpriteBundle {
             material: wall_material,
             //transform: Transform::from_xyz(position.x, position.y, 0.0),
-            sprite: Sprite::new(Vec2::new(16.0, 16.0)),
+            sprite: Sprite::new(Vec2::new(32.0, 32.0)),
             transform: Transform::from_xyz(0.0, 0.0, 0.0),
             ..Default::default()
         })
         .insert(Collider {
             kind: ColliderKind::Player,
-            size: Vec2::new(16.0, 16.0),
+            size: Vec2::new(32.0, 32.0),
         })
-        .insert(Player { speed: 100.0 });
+        .insert(Player { speed: 500.0 });
 }
 
 fn movement(
@@ -95,9 +97,13 @@ fn movement(
 }
 
 fn collision(
+    mut materials: ResMut<Assets<ColorMaterial>>,
+    mut query: Query<(&mut Handle<ColorMaterial>), With<Player>>,
     player_query: Query<(&Collider, &Transform), With<Player>>,
     collider_query: Query<(&Collider, &Transform), Without<Player>>,
 ) {
+    let mut player_color = Color::rgb(0.0, 0.0, 1.0);
+
     if let Ok((player_collider, player_transform)) = player_query.single() {
         for (collider, transform) in collider_query.iter() {
             if collide(
@@ -108,8 +114,14 @@ fn collision(
             )
             .is_some()
             {
-                dbg!("Collision");
+                player_color = Color::rgb(0.0, 1.0, 0.0);
             }
+        }
+    }
+
+    if let Ok(material_handle) = query.single_mut() {
+        if let Some(color_mat) = materials.get_mut(material_handle.id) {
+            color_mat.color = player_color;
         }
     }
 }

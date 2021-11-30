@@ -17,7 +17,6 @@ impl Plugin for MainMenuPlugin {
 struct MainMenuUI;
 
 fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
-    dbg!("Main Menu Setup");
     // TODO: Figure out a good way to handle colors
     commands
         .spawn_bundle(NodeBundle {

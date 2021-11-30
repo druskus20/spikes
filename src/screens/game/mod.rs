@@ -29,9 +29,7 @@ pub enum ColliderKind {
     Spike,
 }
 
-fn setup() {
-    dbg!("Game Setup");
-}
+fn setup() {}
 
 fn despawn() {}
 

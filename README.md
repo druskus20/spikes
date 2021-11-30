@@ -18,7 +18,8 @@ Bevy's design patterns.
 - [x] Manage input in different scenes
 - [x] Player that moves 
 - [x] Walls
-- [ ] Collisions
+  - [ ] Maybe separate the walls and their colliders
+- [x] Collisions
 - [ ] Sprites / Animated sprites
 - [ ] Add game mechanics (spikes)
 - [ ] Implement score and win conditions

@@ -17,37 +17,38 @@ struct Wall;
 fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
     // TODO: handle materials in a proper way
     let wall_material = &materials.add(Color::rgb(0.8, 0.8, 0.8).into());
+    let collider_offset = 300.0;
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(WIDTH / 2.0, 0.0),
+        Vec2::new((WIDTH / 2.0) + (collider_offset / 2.0), 0.0),
         Vec2::new(0.0, HEIGHT),
-        3.0,
+        3.0 + collider_offset,
     );
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(-WIDTH / 2.0, 0.0),
+        Vec2::new(-(WIDTH / 2.0) - (collider_offset / 2.0), 0.0),
         Vec2::new(0.0, HEIGHT),
-        3.0,
+        3.0 + collider_offset,
     );
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(0.0, HEIGHT / 2.0),
+        Vec2::new(0.0, (HEIGHT / 2.0) + (collider_offset / 2.0)),
         Vec2::new(HEIGHT, 0.0),
-        3.0,
+        3.0 + collider_offset,
     );
 
     spawn_wall(
         &mut commands,
         wall_material,
-        Vec2::new(0.0, -HEIGHT / 2.0),
+        Vec2::new(0.0, -(HEIGHT / 2.0) - (collider_offset / 2.0)),
         Vec2::new(HEIGHT, 0.0),
-        3.0,
+        3.0 + collider_offset,
     );
 }
 
@@ -57,7 +58,6 @@ fn despawn(mut commands: Commands, query: Query<(Entity, &Wall)>) {
     }
 }
 
-// BUG: Collider is only working in one direction
 fn spawn_wall(
     commands: &mut Commands,
     material: &Handle<ColorMaterial>,

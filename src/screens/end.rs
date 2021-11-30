@@ -17,7 +17,6 @@ impl Plugin for EndPlugin {
 struct EndScreenUI;
 
 fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
-    dbg!("End Screen Setup");
     // TODO: Figure out a good way to handle colors
     commands
         .spawn_bundle(NodeBundle {
