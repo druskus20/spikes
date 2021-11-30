@@ -1,10 +1,10 @@
 use bevy::prelude::*;
 
-use crate::game;
-use crate::main_menu;
+mod game;
+mod main_menu;
 
-pub struct ScenePlugin;
-impl Plugin for ScenePlugin {
+pub struct ScreensPlugin;
+impl Plugin for ScreensPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_plugin(main_menu::MainMenuPlugin);
         app.add_plugin(game::GamePlugin);

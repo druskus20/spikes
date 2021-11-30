@@ -1,10 +1,8 @@
 use bevy::{prelude::*, render::pass::ClearColor};
 
-mod game;
 mod gamedata;
-mod main_menu;
 mod resources;
-mod scene;
+mod screens;
 
 #[allow(dead_code)]
 
@@ -19,7 +17,7 @@ fn main() {
         .add_startup_system(setup_cameras.system())
         .add_plugin(resources::ResourcesPlugin)
         .add_plugin(gamedata::GameDataPlugin)
-        .add_plugin(scene::ScenePlugin)
+        .add_plugin(screens::ScreensPlugin)
         .run();
 }
 
