@@ -4,17 +4,15 @@ use bevy::prelude::*;
 
 use crate::resources::GlobalResources;
 
-use super::CurrentScreen;
+use super::Screen;
 
 pub struct EndScreenPlugin;
 
 impl Plugin for EndScreenPlugin {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_system_set(
-            SystemSet::on_enter(CurrentScreen::EndScreen).with_system(setup.system()),
-        )
-        .add_system_set(SystemSet::on_update(CurrentScreen::EndScreen).with_system(input.system()))
-        .add_system_set(SystemSet::on_exit(CurrentScreen::EndScreen).with_system(despawn.system()));
+        app.add_system_set(SystemSet::on_enter(Screen::EndScreen).with_system(setup.system()))
+            .add_system_set(SystemSet::on_update(Screen::EndScreen).with_system(input.system()))
+            .add_system_set(SystemSet::on_exit(Screen::EndScreen).with_system(despawn.system()));
     }
 }
 
@@ -59,9 +57,9 @@ fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
         });
 }
 
-fn input(mut input_state: ResMut<Input<KeyCode>>, mut game_state: ResMut<State<CurrentScreen>>) {
+fn input(mut input_state: ResMut<Input<KeyCode>>, mut game_state: ResMut<State<Screen>>) {
     if input_state.just_pressed(KeyCode::Space) {
-        game_state.set(CurrentScreen::MainMenu).unwrap();
+        game_state.set(Screen::MainMenu).unwrap();
         // https://github.com/bevyengine/bevy/issues/1700
         input_state.reset(KeyCode::Space);
     }

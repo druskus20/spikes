@@ -6,15 +6,16 @@
 - [x] Basic File Structure
 - [x] Display something
 - [x] Manage Assets / Resources (works for now)
-  - Figure out a better way to handle global resources
+  - [ ] Figure out a better way to handle global resources
 - [x] Multiple scenes with their own systems 
   - [x] How to destroy elements from a scene
-- [ ] Manage input in different scenes
-- [ ] Player that moves 
+- [x] Manage input in different scenes
+- [x] Player that moves 
 - [ ] Walls
 - [ ] Collisions
 - [ ] Sprites
 - [ ] Add game mechanics (spikes)
 - [ ] Implement score and win conditions
 - [ ] Music ([@Elkowar](https://github.com/elkowar)...?) 
+- [ ] Resize
 
