@@ -13,7 +13,7 @@
 - [x] Player that moves 
 - [ ] Walls
 - [ ] Collisions
-- [ ] Sprites
+- [ ] Sprites / Animated sprites
 - [ ] Add game mechanics (spikes)
 - [ ] Implement score and win conditions
 - [ ] Music ([@Elkowar](https://github.com/elkowar)...?) 

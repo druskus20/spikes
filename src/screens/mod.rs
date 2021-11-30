@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-mod end_screen;
+mod end;
 mod game;
 mod main_menu;
 
@@ -10,7 +10,7 @@ impl Plugin for ScreensPlugin {
         app.add_state(Screen::MainMenu)
             .add_plugin(main_menu::MainMenuPlugin)
             .add_plugin(game::GamePlugin)
-            .add_plugin(end_screen::EndScreenPlugin);
+            .add_plugin(end::EndPlugin);
     }
 }
 

@@ -1,14 +1,12 @@
-use core::time;
-
 use bevy::prelude::*;
 
 use crate::resources::GlobalResources;
 
 use super::Screen;
 
-pub struct EndScreenPlugin;
+pub struct EndPlugin;
 
-impl Plugin for EndScreenPlugin {
+impl Plugin for EndPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_system_set(SystemSet::on_enter(Screen::EndScreen).with_system(setup.system()))
             .add_system_set(SystemSet::on_update(Screen::EndScreen).with_system(input.system()))
@@ -39,7 +37,7 @@ fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
                     "The end!".to_string(),
                     TextStyle {
                         font: global_resources.font.clone(),
-                        font_size: 60.0,
+                        font_size: 45.0,
                         color: Color::rgb(0.8, 0.8, 0.8),
                     },
                     TextAlignment::default(),

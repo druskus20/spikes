@@ -1,8 +1,8 @@
-use core::time;
-
 use bevy::prelude::*;
 
 use super::Screen;
+
+mod level;
 mod player;
 
 pub struct GamePlugin;
@@ -11,7 +11,8 @@ impl Plugin for GamePlugin {
         app.add_system_set(SystemSet::on_enter(Screen::Game).with_system(setup.system()))
             .add_system_set(SystemSet::on_update(Screen::Game).with_system(input.system()))
             .add_system_set(SystemSet::on_exit(Screen::Game).with_system(despawn.system()))
-            .add_plugin(player::PlayerPlugin);
+            .add_plugin(player::PlayerPlugin)
+            .add_plugin(level::LevelPlugin);
     }
 }
 
