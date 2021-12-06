@@ -18,7 +18,8 @@ Bevy's design patterns.
 - [x] Manage input in different scenes
 - [x] Player that moves 
 - [x] Walls
-  - [ ] Maybe separate the walls and their colliders
+  - [ ] Maybe change FacingTowards and use just rotation
+  - [x] ~~Maybe separate the walls and their colliders~~ Implement relative positioning for colliders
 - [x] Collisions
 - [ ] Add game mechanics (spikes)
 - [ ] Implement score and lose conditions
@@ -26,3 +27,8 @@ Bevy's design patterns.
 - [ ] Music ([@Elkowar](https://github.com/elkowar)...?) 
 - [ ] Resize
 
+
+- [ ] Look into SystemParam
+- [ ] Look into system chainning (specially for collision -> movement)
+- [ ] Maybe implement collider in a separate crate (overkill? nah)
+- [ ] Abstract sprites and other components into a component file / directory

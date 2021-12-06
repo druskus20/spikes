@@ -1,4 +1,8 @@
-use bevy::{prelude::*, render::pass::ClearColor};
+use bevy::{
+    diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
+    prelude::*,
+    render::pass::ClearColor,
+};
 
 mod gamedata;
 mod resources;
@@ -14,6 +18,8 @@ fn main() {
     App::build()
         .set_default_properties()
         .add_plugins(DefaultPlugins)
+        .add_plugin(LogDiagnosticsPlugin::default())
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_startup_system(setup_cameras.system())
         .add_plugin(resources::ResourcesPlugin)
         .add_plugin(gamedata::GameDataPlugin)
