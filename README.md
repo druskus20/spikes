@@ -18,16 +18,16 @@ Bevy's design patterns.
 - [x] Manage input in different scenes
 - [x] Player that moves 
 - [x] Walls
-  - [ ] Maybe change FacingTowards and use just rotation
+  - [ ] Maybe change Direction and use just rotation when spawning the spikes
   - [x] ~~Maybe separate the walls and their colliders~~ Implement relative positioning for colliders
 - [x] Collisions
-- [ ] Add game mechanics (spikes)
+- [x] Spike generation, movement and destruction
 - [ ] Implement score and lose conditions
 - [ ] Sprites / Animated sprites
 - [ ] Music ([@Elkowar](https://github.com/elkowar)...?) 
 - [ ] Resize
 
-
+# Maybe...
 - [ ] Look into SystemParam
 - [ ] Look into system chainning (specially for collision -> movement)
 - [ ] Maybe implement collider in a separate crate (overkill? nah)

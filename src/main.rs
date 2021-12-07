@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use bevy::{
     diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin},
     prelude::*,
@@ -7,8 +9,6 @@ use bevy::{
 mod gamedata;
 mod resources;
 mod screens;
-
-#[allow(dead_code)]
 
 pub const TITLE: &str = "Spikes";
 pub const WIDTH: f32 = 500.0;

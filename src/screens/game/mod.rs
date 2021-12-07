@@ -18,14 +18,14 @@ impl Plugin for GamePlugin {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Collider {
     pub position: Vec2, // relative to its sprite
     pub size: Vec2,
     pub kind: ColliderKind,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ColliderKind {
     None,
     Player,

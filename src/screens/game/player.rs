@@ -129,6 +129,10 @@ fn collision(
                 player_collider.size,
             ) {
                 player_color = Color::rgb(0.0, 1.0, 0.0);
+                // TODO: Handle this properly
+                if ColliderKind::Spike == collider.kind {
+                    continue;
+                }
                 match collision {
                     Collision::Left => colliding_at.left = true,
                     Collision::Right => colliding_at.right = true,
