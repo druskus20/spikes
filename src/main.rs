@@ -9,6 +9,7 @@ use bevy::{
 mod gamedata;
 mod resources;
 mod screens;
+mod utils;
 
 pub const TITLE: &str = "Spikes";
 pub const WIDTH: f32 = 500.0;

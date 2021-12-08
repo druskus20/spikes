@@ -13,8 +13,8 @@ impl Plugin for GamePlugin {
             .add_system_set(SystemSet::on_update(Screen::Game).with_system(input.system()))
             .add_system_set(SystemSet::on_exit(Screen::Game).with_system(despawn.system()))
             .add_plugin(level::LevelPlugin)
-            .add_plugin(player::PlayerPlugin)
-            .add_plugin(spikes::SpikesPlugin);
+            .add_plugin(spikes::SpikesPlugin)
+            .add_plugin(player::PlayerPlugin);
     }
 }
 

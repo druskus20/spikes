@@ -84,15 +84,6 @@ fn spawn_wall(
     thickness: f32,
     facing_towards: FacingTowards,
 ) {
-    // Calculate the position of the collider, relative to the sprite
-    let collider_offset = 150.0;
-    let collider_position = match facing_towards {
-        FacingTowards::Right => Vec2::new(collider_offset, 0.0),
-        FacingTowards::Left => Vec2::new(-collider_offset, 0.0),
-        FacingTowards::Top => Vec2::new(0.0, collider_offset),
-        FacingTowards::Bottom => Vec2::new(0.0, -collider_offset),
-    };
-
     commands
         .spawn_bundle(SpriteBundle {
             material: material.clone(),
@@ -102,11 +93,8 @@ fn spawn_wall(
         })
         .insert(Collider {
             kind: ColliderKind::Wall,
-            size: Vec2::new(
-                size.x + thickness + (2.0 * collider_offset),
-                size.y + thickness + (2.0 * collider_offset),
-            ),
-            position: collider_position,
+            size: Vec2::new(size.x + thickness, size.y + thickness),
+            position: Vec2::new(0.0, 0.0),
         })
         .insert(Wall);
 }

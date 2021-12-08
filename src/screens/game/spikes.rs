@@ -8,13 +8,14 @@ use crate::{HEIGHT, WIDTH};
 
 use super::{Collider, ColliderKind, Screen};
 
-const TIMESTEP_4_PER_SECOND: f64 = 15.0 / 60.0;
+const TIMESTEP: f64 = 15.0 / 60.0;
 
 pub struct SpikesPlugin;
 impl Plugin for SpikesPlugin {
     fn build(&self, app: &mut AppBuilder) {
+        // TODO: Actually clean this up
         let custom_criteria = || {
-            FixedTimestep::step(TIMESTEP_4_PER_SECOND).chain(
+            FixedTimestep::step(TIMESTEP).chain(
                 (|In(input): In<ShouldRun>, state: Res<State<Screen>>| {
                     if state.current() == &Screen::Game {
                         input
@@ -123,9 +124,9 @@ fn generate_new_spikes(mut commands: Commands, mut materials: ResMut<Assets<Colo
         position,
         Vec2::new(0.0, 0.0),
         size,
-        1.0,
-        direction,
         10.0,
+        direction,
+        5.0,
     )
 }
 

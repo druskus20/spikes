@@ -32,3 +32,8 @@ Bevy's design patterns.
 - [ ] Look into system chainning (specially for collision -> movement)
 - [ ] Maybe implement collider in a separate crate (overkill? nah)
 - [ ] Abstract sprites and other components into a component file / directory
+- [ ] Look into heron / rapier
+- [ ] Look into debug plugins
+- [ ] Look into physics plugins
+- [ ] Look into asset loading plugins
+- [ ] Decouple game actions from inputs

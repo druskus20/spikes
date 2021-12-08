@@ -1,6 +1,5 @@
+use crate::utils::{collide, Collision};
 use bevy::prelude::*;
-use bevy::sprite::collide_aabb::collide;
-use bevy::sprite::collide_aabb::Collision;
 
 use super::Collider;
 use super::ColliderKind;
@@ -74,7 +73,7 @@ fn setup(
             ..Default::default()
         })
         .insert(Player {
-            speed: 200.0,
+            speed: 300.0,
             colliding_at: Default::default(),
         });
 }
@@ -86,19 +85,19 @@ fn movement(
 ) {
     if let Ok((player, mut transform)) = query.single_mut() {
         let (mut x, mut y) = (0.0, 0.0);
-        if keyboard_input.pressed(KeyCode::Left) && !player.colliding_at.left {
+        if keyboard_input.pressed(KeyCode::A) && !player.colliding_at.left {
             x -= 1.0;
         }
 
-        if keyboard_input.pressed(KeyCode::Right) && !player.colliding_at.right {
+        if keyboard_input.pressed(KeyCode::D) && !player.colliding_at.right {
             x += 1.0;
         }
 
-        if keyboard_input.pressed(KeyCode::Down) && !player.colliding_at.down {
+        if keyboard_input.pressed(KeyCode::S) && !player.colliding_at.down {
             y -= 1.0;
         }
 
-        if keyboard_input.pressed(KeyCode::Up) && !player.colliding_at.up {
+        if keyboard_input.pressed(KeyCode::W) && !player.colliding_at.up {
             y += 1.0;
         }
 
@@ -128,8 +127,13 @@ fn collision(
                 player_transform.translation + Vec3::from((player_collider.position, 0.0)),
                 player_collider.size,
             ) {
-                player_color = Color::rgb(0.0, 1.0, 0.0);
                 // TODO: Handle this properly
+                if collision == Collision::Within {
+                    player_color = Color::rgb(1.0, 1.0, 0.0);
+                } else {
+                    player_color = Color::rgb(0.0, 1.0, 0.0);
+                }
+
                 if ColliderKind::Spike == collider.kind {
                     continue;
                 }
@@ -138,6 +142,7 @@ fn collision(
                     Collision::Right => colliding_at.right = true,
                     Collision::Top => colliding_at.up = true,
                     Collision::Bottom => colliding_at.down = true,
+                    Collision::Within => {}
                 }
             }
         }
