@@ -1,20 +1,18 @@
 use bevy::prelude::*;
 
-use crate::resources::GlobalResources;
+use crate::{resources::GlobalResources, screens::Screen};
 
-use super::Screen;
+pub struct TitlePlugin;
 
-pub struct EndPlugin;
-
-impl Plugin for EndPlugin {
+impl Plugin for TitlePlugin {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_system_set(SystemSet::on_enter(Screen::EndScreen).with_system(setup.system()))
-            .add_system_set(SystemSet::on_update(Screen::EndScreen).with_system(input.system()))
-            .add_system_set(SystemSet::on_exit(Screen::EndScreen).with_system(despawn.system()));
+        app.add_system_set(SystemSet::on_enter(Screen::Title).with_system(setup.system()))
+            .add_system_set(SystemSet::on_update(Screen::Title).with_system(input.system()))
+            .add_system_set(SystemSet::on_exit(Screen::Title).with_system(despawn.system()));
     }
 }
 
-struct EndScreenUI;
+struct MainMenuUI;
 
 fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
     // TODO: Figure out a good way to handle colors
@@ -29,14 +27,35 @@ fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
             material: global_resources.background.clone(),
             ..Default::default()
         })
-        .insert(EndScreenUI)
+        .insert(MainMenuUI)
         .with_children(|parent| {
             parent.spawn_bundle(TextBundle {
                 text: Text::with_section(
-                    "The end!".to_string(),
+                    "Press Space".to_string(),
                     TextStyle {
                         font: global_resources.font.clone(),
-                        font_size: 45.0,
+                        font_size: 30.0,
+                        color: Color::rgb(0.8, 0.8, 0.8),
+                    },
+                    TextAlignment::default(),
+                ),
+                style: Style {
+                    size: Size::new(Val::Px(200.0), Val::Px(90.0)),
+                    margin: Rect::all(Val::Auto),
+                    padding: Rect::all(Val::Auto),
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    ..Default::default()
+                },
+                ..Default::default()
+            });
+
+            parent.spawn_bundle(TextBundle {
+                text: Text::with_section(
+                    "Spikes".to_string(),
+                    TextStyle {
+                        font: global_resources.font.clone(),
+                        font_size: 60.0,
                         color: Color::rgb(0.8, 0.8, 0.8),
                     },
                     TextAlignment::default(),
@@ -56,13 +75,13 @@ fn setup(mut commands: Commands, global_resources: ResMut<GlobalResources>) {
 
 fn input(mut input_state: ResMut<Input<KeyCode>>, mut game_state: ResMut<State<Screen>>) {
     if input_state.just_pressed(KeyCode::Space) {
-        game_state.set(Screen::MainMenu).unwrap();
+        game_state.set(Screen::Game).unwrap();
         // https://github.com/bevyengine/bevy/issues/1700
         input_state.reset(KeyCode::Space);
     }
 }
 
-fn despawn(mut commands: Commands, query: Query<(Entity, &EndScreenUI)>) {
+fn despawn(mut commands: Commands, query: Query<(Entity, &MainMenuUI)>) {
     commands
         .entity(query.single().unwrap().0)
         .despawn_recursive();

@@ -6,9 +6,15 @@ use bevy::{
     render::pass::ClearColor,
 };
 
+mod bevy_ext;
+mod end;
+mod game;
 mod gamedata;
+mod input;
+mod physics;
 mod resources;
 mod screens;
+mod title;
 mod utils;
 
 pub const TITLE: &str = "Spikes";

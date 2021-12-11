@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use super::Screen;
+use crate::screens::Screen;
 
 mod level;
 mod player;
@@ -45,7 +45,7 @@ fn despawn() {}
 
 fn input(mut input_state: ResMut<Input<KeyCode>>, mut game_state: ResMut<State<Screen>>) {
     if input_state.just_pressed(KeyCode::Space) {
-        game_state.set(Screen::EndScreen).unwrap();
+        game_state.set(Screen::End).unwrap();
         // https://github.com/bevyengine/bevy/issues/1700
         input_state.reset(KeyCode::Space);
     }
