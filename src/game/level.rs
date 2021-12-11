@@ -1,7 +1,7 @@
-use crate::{HEIGHT, WIDTH};
+use crate::{screens::Screen, HEIGHT, WIDTH};
 use bevy::prelude::*;
 
-use super::{Collider, ColliderKind, Screen};
+use super::{Collider, ColliderKind};
 
 pub struct LevelPlugin;
 
@@ -30,7 +30,6 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         Vec2::new(WIDTH / 2.0, 0.0),
         Vec2::new(0.0, HEIGHT),
         3.0,
-        FacingTowards::Right,
     );
 
     spawn_wall(
@@ -39,7 +38,6 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         Vec2::new(-(WIDTH / 2.0), 0.0),
         Vec2::new(0.0, HEIGHT),
         3.0,
-        FacingTowards::Left,
     );
 
     spawn_wall(
@@ -48,7 +46,6 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         Vec2::new(0.0, HEIGHT / 2.0),
         Vec2::new(HEIGHT, 0.0),
         3.0,
-        FacingTowards::Top,
     );
 
     spawn_wall(
@@ -57,7 +54,6 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         Vec2::new(0.0, -(HEIGHT / 2.0)),
         Vec2::new(HEIGHT, 0.0),
         3.0,
-        FacingTowards::Bottom,
     );
 }
 
@@ -82,7 +78,6 @@ fn spawn_wall(
     position: Vec2,
     size: Vec2,
     thickness: f32,
-    facing_towards: FacingTowards,
 ) {
     commands
         .spawn_bundle(SpriteBundle {

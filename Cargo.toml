@@ -9,3 +9,5 @@ edition = "2021"
 bevy = { version = "0.5.0", features = ["dynamic"] }
 rand = "0.8.4"
 anyhow = "1.0.51"
+extend = "1.1.2"
+autodefault = "2.0.0"
