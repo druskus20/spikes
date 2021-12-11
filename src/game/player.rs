@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+use crate::input::InputBindings;
+use crate::input::PlayerActions;
 use crate::physics::collide;
 use crate::physics::Collision;
 
@@ -82,24 +84,21 @@ fn setup(
 
 fn movement(
     time: Res<Time>,
-    keyboard_input: Res<Input<KeyCode>>,
+    input_bindings: Res<InputBindings>,
     mut query: Query<(&Player, &mut Transform)>,
 ) {
     if let Ok((player, mut transform)) = query.single_mut() {
         let (mut x, mut y) = (0.0, 0.0);
-        if keyboard_input.pressed(KeyCode::A) && !player.colliding_at.left {
+        if input_bindings.is_active(&PlayerActions::MoveLeft) && !player.colliding_at.left {
             x -= 1.0;
         }
-
-        if keyboard_input.pressed(KeyCode::D) && !player.colliding_at.right {
+        if input_bindings.is_active(&PlayerActions::MoveRight) && !player.colliding_at.right {
             x += 1.0;
         }
-
-        if keyboard_input.pressed(KeyCode::S) && !player.colliding_at.down {
+        if input_bindings.is_active(&PlayerActions::MoveDown) && !player.colliding_at.up {
             y -= 1.0;
         }
-
-        if keyboard_input.pressed(KeyCode::W) && !player.colliding_at.up {
+        if input_bindings.is_active(&PlayerActions::MoveUp) && !player.colliding_at.down {
             y += 1.0;
         }
 

@@ -31,6 +31,7 @@ fn main() {
         .add_plugin(resources::ResourcesPlugin)
         .add_plugin(gamedata::GameDataPlugin)
         .add_plugin(screens::ScreensPlugin)
+        .add_plugin(input::InputPlugin::new())
         .run();
 }
 
