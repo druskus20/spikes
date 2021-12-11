@@ -29,7 +29,7 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         wall_material,
         Vec2::new(WIDTH / 2.0, 0.0),
         Vec2::new(0.0, HEIGHT),
-        3.0,
+        20.0,
     );
 
     spawn_wall(
@@ -37,7 +37,7 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         wall_material,
         Vec2::new(-(WIDTH / 2.0), 0.0),
         Vec2::new(0.0, HEIGHT),
-        3.0,
+        20.0,
     );
 
     spawn_wall(
@@ -45,7 +45,7 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         wall_material,
         Vec2::new(0.0, HEIGHT / 2.0),
         Vec2::new(HEIGHT, 0.0),
-        3.0,
+        20.0,
     );
 
     spawn_wall(
@@ -53,7 +53,7 @@ fn setup(mut commands: Commands, mut materials: ResMut<Assets<ColorMaterial>>) {
         wall_material,
         Vec2::new(0.0, -(HEIGHT / 2.0)),
         Vec2::new(HEIGHT, 0.0),
-        3.0,
+        20.0,
     );
 }
 
