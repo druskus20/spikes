@@ -7,6 +7,12 @@ It may or may not be a bit over engineered in order to experiment with design
 Bevy's design patterns.
 </p> 
 
+<p align="center">
+<img src="https://user-images.githubusercontent.com/43417195/148283481-7956132d-a3e8-4366-b0f8-5d4aba905372.gif" width="300px">
+</p> 
+
+
+
 ## TODO
 - [x] Basic Game State
 - [x] Basic File Structure
