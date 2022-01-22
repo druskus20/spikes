@@ -3,7 +3,7 @@
 A simple game made using <a href="https://bevyengine.org">Bevy</a>. 
 </p> 
 <p align="center">
-It may or may not be a bit over engineered in order to experiment with design
+It may or may not be a bit over engineered in order to experiment with
 Bevy's design patterns.
 </p> 
 
